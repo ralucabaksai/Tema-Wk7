@@ -1,0 +1,33 @@
+body{
+    width: 1000px;
+    margin: 30px auto;
+}
+
+h3{
+    margin-left: 50px;
+}
+.search{
+    margin-left: 50px;
+    margin-bottom: 30px;
+}
+.search input{
+    display: inline;
+}
+.comments{
+    margin-left: 50px;
+}
+
+article{
+    margin-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px dotted black;
+}
+form{
+    margin-left: 50px;
+}
+input{
+    display: block;
+    margin-bottom: 10px;
+}
+
