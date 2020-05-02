@@ -15,19 +15,19 @@ var dataFromDB = [
 
 
 
-function createArticleElent(title, body, author, id){
-    var articleElement=document.createElement("article");
+function createArticleElent (title, body, author, id){
+    var articleElement = document.createElement ("article");
 
-    var headerElement=document.createElement("header");
-    articleElement.appendChild(headerElement);
+    var headerElement = document.createElement ("header");
+    articleElement.appendChild (headerElement);
     headerElement.innerHTML=title;
 
-    var bodyElement=document.createElement("body");
-    articleElement.appendChild(bodyElement);
+    var bodyElement=document.createElement ("body");
+    articleElement.appendChild (bodyElement);
     bodyElement.innerHTML=body;
 
-    var footerElement=document.createElement("footer");
-    articleElement.appendChild(footerElement);
+    var footerElement=document.createElement ("footer");
+    articleElement.appendChild (footerElement);
     footerElement.innerHTML=author;
 
     var buttonElement=document.createElement("button");
@@ -35,6 +35,7 @@ function createArticleElent(title, body, author, id){
     buttonElement.textContent="Delete";
     // el.setAttribute('data-foo', 'Hello World!');
     buttonElement.setAttribute("data-id", id);
+    articleElement.setAttribute("id", id)
 
    
     
@@ -50,7 +51,7 @@ function addComment(e){
     console.dir(bodyInput.value);
     var authorInput=document.querySelector(".inputComment input:last-of-type");
     console.dir(authorInput.value);
-    var theId = dataFromDB.length+1;
+    var theId = (dataFromDB.length+1).toString();
     console.log(theId);
     var newArrayElement = { 
         id : theId, 
@@ -66,6 +67,7 @@ function addComment(e){
     console.log(deleteBut);
     for(i=0; i<deleteBut.length; i++){
         deleteBut[i].addEventListener("click", deleteElement);
+
     }
     }
 
@@ -74,9 +76,16 @@ function addOnPageComentsFromDB(){
     // console.log(commentList);
     for (i=0; i<dataFromDB.length; i++){
         var newArticle = createArticleElent(dataFromDB[i].title, dataFromDB[i].body, dataFromDB[i].author, dataFromDB[i].id);
-        sectionElement.appendChild(newArticle);
+        sectionElement.appendChild(newArticle);}
 
-    }
+    var deleteBut=document.querySelectorAll("[data-id]");
+    console.log(deleteBut);
+    for(i=0; i<deleteBut.length; i++){
+            deleteBut[i].addEventListener("click", deleteElement);
+    
+        }
+
+    
 }
 function deleteElement () {
     var currentElement=this.parentElement;
@@ -90,17 +99,47 @@ function addTextOnConsol(e){
     console.log(serchText.value);
 }
 
+function restoreData(){
+var articleElements=document.querySelectorAll(".comments article");
+console.log(articleElements);
+var idOfArticles=[];
+for (var i=0; i<articleElements.length; i++){
+    idOfArticles.push(articleElements[i].getAttribute("id")) ;
+}
+console.log(idOfArticles);
+var idOfArticlesFromDB=[];
+for(var i=0; i<dataFromDB.length; i++){
+idOfArticlesFromDB.push(dataFromDB[i].id);
+}
+console.log(idOfArticlesFromDB);
+
+var difference = idOfArticlesFromDB.filter(function (x) {
+    return idOfArticles.indexOf(x) === -1;
+  });
+
+console.log (difference);
+
+for (var i=0; i<difference.length; i++){
+    var index=difference[i]-1;
+    console.log(index);
+
+    var restoredArticle=createArticleElent(dataFromDB[index].title, dataFromDB[index].body, dataFromDB[index].author, dataFromDB[index].id);
+    sectionElement.appendChild(restoredArticle);
+}
+}
+
 function executions(){
     console.log('loaded!');
     addOnPageComentsFromDB();
     var submitButton=document.querySelector(".inputComment button:first-of-type");
     var searchButton=document.querySelector(".search-button");
-    submitButton.addEventListener("click", addComment);    var searchButton=document.querySelector(".search-button");
+    submitButton.addEventListener("click", addComment);    
+    var searchButton=document.querySelector(".search-button");
     var searchInputBar=document.querySelector(".search input");
     searchButton.addEventListener("click", addTextOnConsol);
     searchInputBar.addEventListener("change", addTextOnConsol);
     var restoreBut=document.querySelector(".restore");
-    restoreBut.addEventListener("click", addOnPageComentsFromDB);
+    restoreBut.addEventListener("click", restoreData);
 }
 var sectionElement=document.querySelector(".comments");
 
